@@ -2,7 +2,7 @@
 
 import { useRef } from "react"
 import { motion, useInView } from "framer-motion"
-import { Code, Database, Server, Smartphone, GitBranch, Terminal, Globe, Layers } from "lucide-react"
+import { Code, Database, Layers, GitBranch, Users, Cloud, Globe } from "lucide-react"
 
 export default function Skills() {
     const ref = useRef<HTMLDivElement>(null)
@@ -27,32 +27,32 @@ export default function Skills() {
         {
             category: "Programming Languages",
             icon: <Code className="h-6 w-6" />,
-            items: ["Python", "Java", "C++", "JavaScript", "HTML", "CSS", "Kotlin"],
+            items: ["Java", "Python", "C/C++", "JavaScript", "R"],
         },
         {
-            category: "Web Development",
-            icon: <Globe className="h-6 w-6" />,
-            items: ["Django", "JavaScript", "HTML5", "CSS", "React", "RESTful APIs"],
+            category: "Web Technologies",
+            icon: <Globe className="h-6 w-6" />, // Using Globe icon for Web Technologies
+            items: ["HTML", "CSS"],
         },
         {
-            category: "Mobile Development",
-            icon: <Smartphone className="h-6 w-6" />,
-            items: ["Android", "Kotlin", "Java", "Gradle", "XML"],
-        },
-        {
-            category: "Databases",
-            icon: <Database className="h-6 w-6" />,
-            items: ["PostgreSQL", "MySQL", "SQLite"],
-        },
-        {
-            category: "DevOps & Tools",
-            icon: <Server className="h-6 w-6" />,
-            items: ["Git", "GitHub"],
+            category: "Frameworks",
+            icon: <Layers className="h-6 w-6" />,
+            items: ["Django"],
         },
         {
             category: "Build Tools",
             icon: <Layers className="h-6 w-6" />,
-            items: ["Maven", "Gradle", "npm", "pip"],
+            items: ["Maven", "Gradle"],
+        },
+        {
+            category: "Databases",
+            icon: <Database className="h-6 w-6" />,
+            items: ["PostgreSQL", "SQLite", "MySQL"],
+        },
+        {
+            category: "Data Tools",
+            icon: <Database className="h-6 w-6" />,
+            items: ["Excel", "Tableau"],
         },
         {
             category: "Version Control",
@@ -60,9 +60,19 @@ export default function Skills() {
             items: ["Git", "GitHub"],
         },
         {
-            category: "Command Line",
-            icon: <Terminal className="h-6 w-6" />,
-            items: ["Bash", "PowerShell", "Command Prompt"],
+            category: "Developer Tools",
+            icon: <Code className="h-6 w-6" />,
+            items: ["PyCharm", "IntelliJ"],
+        },
+        {
+            category: "Soft Skills",
+            icon: <Users className="h-6 w-6" />,
+            items: ["Communication", "Adaptability", "Leadership", "Problem-Solving", "Team Collaboration"],
+        },
+        {
+            category: "Cloud & Deployment",
+            icon: <Cloud className="h-6 w-6" />,
+            items: ["Vercel"],
         },
     ]
 
@@ -80,8 +90,8 @@ export default function Skills() {
                         <h2 className="text-3xl md:text-4xl font-bold mb-4">Skills & Technologies</h2>
                         <div className="w-20 h-1 bg-primary mx-auto mb-6"></div>
                         <p className="text-foreground/80 max-w-2xl mx-auto">
-                            I&#39;ve worked with a variety of technologies and tools throughout my career. Here&#39;s an overview of my
-                            technical expertise:
+                            I've worked with a variety of technologies and tools throughout my journey. Here's an overview of my
+                            technical and soft skills:
                         </p>
                     </motion.div>
 
@@ -99,8 +109,8 @@ export default function Skills() {
                                 <div className="flex flex-wrap gap-2">
                                     {skill.items.map((item, i) => (
                                         <span key={i} className="px-3 py-1 bg-secondary text-secondary-foreground rounded-full text-sm">
-                      {item}
-                    </span>
+                                            {item}
+                                        </span>
                                     ))}
                                 </div>
                             </motion.div>
@@ -111,4 +121,3 @@ export default function Skills() {
         </section>
     )
 }
-

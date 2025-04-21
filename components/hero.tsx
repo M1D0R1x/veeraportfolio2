@@ -73,7 +73,7 @@ export default function Hero() {
                         transition={{ duration: 0.5, delay: 0.2 }}
                     >
                         <p className="text-xl md:text-2xl text-foreground/80 mb-8 max-w-2xl mx-auto">
-                            I build robust web applications and mobile experiences with modern technologies
+                            I specialize in building robust web applications with modern technologies like Django, Java, and PostgreSQL.
                         </p>
                     </motion.div>
 

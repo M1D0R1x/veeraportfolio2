@@ -51,122 +51,50 @@ export default function Projects() {
     const projects: Project[] = [
         {
             id: 1,
-            title: "E-commerce Platform",
-            description: "A full-featured e-commerce platform built with Django and React",
+            title: "Nihonow",
+            description: "A full-stack web application for Japanese language learning, deployed on Vercel",
             image: "/placeholder.svg?height=600&width=800",
-            tags: ["Django", "Python", "React", "PostgreSQL"],
+            tags: ["Python", "Django", "HTML", "CSS", "JavaScript", "PostgreSQL", "Git"],
             category: ["web", "django"],
-            demoUrl: "https://example.com",
-            codeUrl: "https://github.com",
+            demoUrl: "https://nihonow.vercel.app",
             details:
-                "This e-commerce platform provides a complete solution for online stores with product management, cart functionality, payment processing, and order tracking.",
+                "Nihonow is a full-stack web application designed to provide free Japanese language learning from beginner to advanced levels, deployed on Vercel.",
             features: [
-                "User authentication and profiles",
-                "Product catalog with categories and search",
-                "Shopping cart and checkout process",
-                "Payment gateway integration",
-                "Order management and tracking",
-                "Admin dashboard for inventory management",
+                "Designed and developed using Django, providing free learning from beginner to advanced levels",
+                "Integrated multimedia resources, quizzes, and flashcards for grammar, vocabulary, and Kanji mastery",
+                "Used Ably for WebSocket communication to enable real-time updates",
             ],
         },
         {
             id: 2,
-            title: "Task Management App",
-            description: "A Kanban-style task management application",
+            title: "Chat Application",
+            description: "A peer-to-peer chat application with real-time messaging, file transfers, and a Java Swing interface",
             image: "/placeholder.svg?height=600&width=800",
-            tags: ["Django", "Python", "JavaScript", "REST API"],
-            category: ["web", "django"],
-            demoUrl: "https://example.com",
-            codeUrl: "https://github.com",
+            tags: ["Java", "Java Swing", "Socket Programming", "SQLite", "Maven", "Git"],
+            category: ["java"],
+            codeUrl: "https://github.com/M1D0R1x/Java_Chat_Application",
             details:
-                "This task management application helps teams organize their work with a visual Kanban board interface, allowing for easy tracking of project progress.",
+                "This chat application enables peer-to-peer real-time messaging with a user-friendly interface built using Java Swing.",
             features: [
-                "Drag-and-drop task management",
-                "Project and team organization",
-                "Task assignments and due dates",
-                "Comments and attachments",
-                "Progress tracking and reporting",
-                "Email notifications",
+                "Built using Java and Socket Programming, featuring a messaging interface with Java Swing",
+                "Added file transfers, emoji support, and chat history clearing",
+                "Integrated SQLite for persistent message storage, managed with Maven",
             ],
         },
         {
             id: 3,
-            title: "Fitness Tracker",
-            description: "Android application for tracking workouts and fitness goals",
+            title: "Text and Speech to Indian Sign Language",
+            description: "A web application converting text and speech into animated Indian Sign Language gestures, deployed on Vercel",
             image: "/placeholder.svg?height=600&width=800",
-            tags: ["Kotlin", "Android", "Room Database", "Gradle"],
-            category: ["mobile", "android"],
-            demoUrl: "https://example.com",
-            codeUrl: "https://github.com",
+            tags: ["Python", "Django", "PostgreSQL", "JavaScript"],
+            category: ["web", "django"],
+            demoUrl: "https://animatedsign-coral.vercel.app",
             details:
-                "This fitness tracking app allows users to record workouts, track progress, and set fitness goals with a clean, intuitive interface.",
+                "This web application converts text and speech inputs into animated Indian Sign Language (ISL) gestures, deployed on Vercel.",
             features: [
-                "Workout logging and history",
-                "Progress charts and statistics",
-                "Goal setting and achievement tracking",
-                "Exercise library with instructions",
-                "Customizable workout plans",
-                "Integration with health platforms",
-            ],
-        },
-        {
-            id: 4,
-            title: "Weather Dashboard",
-            description: "Real-time weather information dashboard with forecasts",
-            image: "/placeholder.svg?height=600&width=800",
-            tags: ["JavaScript", "HTML", "CSS", "API Integration"],
-            category: ["web"],
-            demoUrl: "https://example.com",
-            codeUrl: "https://github.com",
-            details:
-                "This weather dashboard provides real-time weather information and forecasts for locations worldwide, with a clean and responsive interface.",
-            features: [
-                "Current weather conditions",
-                "5-day weather forecast",
-                "Location search and favorites",
-                "Interactive weather maps",
-                "Weather alerts and notifications",
-                "Historical weather data",
-            ],
-        },
-        {
-            id: 5,
-            title: "Social Media API",
-            description: "RESTful API for a social media platform built with Django REST framework",
-            image: "/placeholder.svg?height=600&width=800",
-            tags: ["Django", "Python", "REST API", "PostgreSQL"],
-            category: ["web", "django", "api"],
-            demoUrl: "https://example.com",
-            codeUrl: "https://github.com",
-            details:
-                "This API provides all the backend functionality needed for a social media platform, including user authentication, posts, comments, likes, and more.",
-            features: [
-                "User authentication and profiles",
-                "Post creation and management",
-                "Comments and reactions",
-                "Friend/follower relationships",
-                "Notifications system",
-                "Content moderation tools",
-            ],
-        },
-        {
-            id: 6,
-            title: "Budget Tracker",
-            description: "Personal finance and budget tracking application",
-            image: "/placeholder.svg?height=600&width=800",
-            tags: ["Java", "Spring Boot", "MySQL", "Thymeleaf"],
-            category: ["web", "java"],
-            demoUrl: "https://example.com",
-            codeUrl: "https://github.com",
-            details:
-                "This budget tracking application helps users manage their personal finances, track expenses, and set budget goals with detailed reporting.",
-            features: [
-                "Expense and income tracking",
-                "Budget creation and monitoring",
-                "Financial reports and charts",
-                "Bill reminders and recurring transactions",
-                "Savings goals tracking",
-                "Data export and backup",
+                "Developed using Django to convert inputs into ISL gestures",
+                "Utilized WebKitSpeechRecognition for speech input and NLTK for text processing",
+                "Integrated JavaScript for front-end animation rendering",
             ],
         },
     ]
@@ -174,10 +102,8 @@ export default function Projects() {
     const filters = [
         { name: "All", value: "all" },
         { name: "Web", value: "web" },
-        { name: "Mobile", value: "mobile" },
         { name: "Django", value: "django" },
-        { name: "Android", value: "android" },
-        { name: "API", value: "api" },
+        { name: "Java", value: "java" },
     ]
 
     const filteredProjects =
@@ -197,7 +123,7 @@ export default function Projects() {
                         <h2 className="text-3xl md:text-4xl font-bold mb-4">My Projects</h2>
                         <div className="w-20 h-1 bg-primary mx-auto mb-6"></div>
                         <p className="text-foreground/80 max-w-2xl mx-auto">
-                            Here are some of the projects I&#39;ve worked on. Each project demonstrates different skills and technologies.
+                            Here are some of the projects I've worked on. Each project demonstrates different skills and technologies.
                         </p>
                     </motion.div>
 
@@ -235,11 +161,11 @@ export default function Projects() {
                                             height={600}
                                             className="object-cover transition-transform duration-500 group-hover:scale-110"
                                         />
-                                        <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                                        <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center gap-2">
                                             <Button
                                                 variant="outline"
                                                 size="icon"
-                                                className="bg-white/20 backdrop-blur-sm border-white/50 text-white hover:bg-white/30 mr-2"
+                                                className="bg-white/20 backdrop-blur-sm border-white/50 text-white hover:bg-white/30"
                                                 onClick={() => setSelectedProject(project)}
                                             >
                                                 <Maximize2 className="h-5 w-5" />
@@ -248,7 +174,7 @@ export default function Projects() {
                                                 <Button
                                                     variant="outline"
                                                     size="icon"
-                                                    className="bg-white/20 backdrop-blur-sm border-white/50 text-white hover:bg-white/30 mr-2"
+                                                    className="bg-white/20 backdrop-blur-sm border-white/50 text-white hover:bg-white/30"
                                                     asChild
                                                 >
                                                     <a href={project.demoUrl} target="_blank" rel="noopener noreferrer">
@@ -270,17 +196,17 @@ export default function Projects() {
                                             )}
                                         </div>
                                     </div>
-                                    <div className="p-6">
+                                    <div className="p-6 flex flex-col min-h-[250px]">
                                         <h3 className="text-xl font-bold mb-2">{project.title}</h3>
-                                        <p className="text-foreground/70 mb-4">{project.description}</p>
+                                        <p className="text-foreground/70 mb-4 flex-grow">{project.description}</p>
                                         <div className="flex flex-wrap gap-2 mb-4">
                                             {project.tags.map((tag, index) => (
                                                 <span key={index} className="px-2 py-1 bg-primary/10 text-primary rounded-md text-xs">
-                          {tag}
-                        </span>
+                                                    {tag}
+                                                </span>
                                             ))}
                                         </div>
-                                        <Button variant="outline" size="sm" className="w-full" onClick={() => setSelectedProject(project)}>
+                                        <Button variant="outline" size="sm" className="w-full mt-auto" onClick={() => setSelectedProject(project)}>
                                             View Details
                                         </Button>
                                     </div>
@@ -333,8 +259,8 @@ export default function Projects() {
                                 <div className="flex flex-wrap gap-2">
                                     {selectedProject?.tags.map((tag, index) => (
                                         <span key={index} className="px-3 py-1 bg-secondary text-secondary-foreground rounded-full text-sm">
-                      {tag}
-                    </span>
+                                            {tag}
+                                        </span>
                                     ))}
                                 </div>
                             </div>
@@ -365,4 +291,3 @@ export default function Projects() {
         </section>
     )
 }
-

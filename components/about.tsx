@@ -44,7 +44,7 @@ export default function About() {
                         <motion.div variants={itemVariants} className="relative">
                             <div className="relative w-full aspect-square max-w-md mx-auto overflow-hidden rounded-lg shadow-xl">
                                 <Image
-                                    src="/placeholder.svg?height=500&width=500"
+                                    src="/developer-portrait.jpg"
                                     alt="Developer Portrait"
                                     width={500}
                                     height={500}
@@ -52,27 +52,15 @@ export default function About() {
                                 />
                                 <div className="absolute inset-0 bg-gradient-to-tr from-primary/40 to-transparent opacity-60"></div>
                             </div>
-                            <div className="absolute -bottom-6 -right-6 w-32 h-32 bg-secondary rounded-lg shadow-lg hidden md:flex items-center justify-center">
-                                <span className="text-5xl font-bold text-primary">5+</span>
-                                <span className="text-sm ml-1">
-                  Years
-                  <br />
-                  Experience
-                </span>
-                            </div>
                         </motion.div>
 
                         <motion.div variants={itemVariants}>
-                            <h3 className="text-2xl font-bold mb-4">Full-Stack Developer & Mobile App Developer</h3>
+                            <h3 className="text-2xl font-bold mb-4">Full-Stack Developer</h3>
                             <p className="text-foreground/80 mb-6">
-                                I&#39;m a passionate developer with expertise in building robust web applications and mobile experiences.
-                                With a strong foundation in both frontend and backend technologies, I create seamless, user-friendly
-                                solutions that solve real-world problems.
+                                I’m Saviti Veerababu, a Computer Science student at Lovely Professional University, passionate about solving real-world problems through technology. I build web applications using modern technologies like Django, Python, Java, and PostgreSQL, focusing on creating user-friendly and impactful solutions.
                             </p>
                             <p className="text-foreground/80 mb-6">
-                                My journey in software development has equipped me with a diverse skill set spanning Python, Java, C++,
-                                JavaScript, and more. I&#39;m particularly experienced with Django for web development and Kotlin for
-                                Android applications.
+                                My journey in software development has honed my skills in Python, Java, C/C++, JavaScript, and SQL, with hands-on experience in frameworks like Django and tools like Git and Maven.
                             </p>
                             <div className="grid grid-cols-2 gap-4 mb-8">
                                 <div>
@@ -93,7 +81,7 @@ export default function About() {
                                 </div>
                             </div>
                             <Button className="flex items-center gap-2" asChild>
-                                <a href="#" download>
+                                <a href="https://fczdt0xol8zxbzng.public.blob.vercel-storage.com/veera_SDE_resume-I27PmFRrdfhwwzRiuZ0ns7fsWdRnqp.pdf?download=1" download>
                                     <FileText className="h-4 w-4" />
                                     Download Resume
                                 </a>
@@ -105,4 +93,3 @@ export default function About() {
         </section>
     )
 }
-
