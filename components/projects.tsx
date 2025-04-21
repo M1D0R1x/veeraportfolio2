@@ -53,7 +53,7 @@ export default function Projects() {
             id: 1,
             title: "Nihonow",
             description: "A full-stack web application for Japanese language learning, deployed on Vercel",
-            image: "/placeholder.svg?height=600&width=800",
+            image: "/images/nihonow.png", // Replace with your screenshot
             tags: ["Python", "Django", "HTML", "CSS", "JavaScript", "PostgreSQL", "Git"],
             category: ["web", "django"],
             demoUrl: "https://nihonow.vercel.app",
@@ -69,7 +69,7 @@ export default function Projects() {
             id: 2,
             title: "Chat Application",
             description: "A peer-to-peer chat application with real-time messaging, file transfers, and a Java Swing interface",
-            image: "/placeholder.svg?height=600&width=800",
+            image: "/images/chatapp.png", // Replace with your screenshot
             tags: ["Java", "Java Swing", "Socket Programming", "SQLite", "Maven", "Git"],
             category: ["java"],
             codeUrl: "https://github.com/M1D0R1x/Java_Chat_Application",
@@ -85,7 +85,7 @@ export default function Projects() {
             id: 3,
             title: "Text and Speech to Indian Sign Language",
             description: "A web application converting text and speech into animated Indian Sign Language gestures, deployed on Vercel",
-            image: "/placeholder.svg?height=600&width=800",
+            image: "/images/animated.png", // Replace with your screenshot
             tags: ["Python", "Django", "PostgreSQL", "JavaScript"],
             category: ["web", "django"],
             demoUrl: "https://animatedsign-coral.vercel.app",
@@ -155,7 +155,7 @@ export default function Projects() {
                                 >
                                     <div className="relative overflow-hidden aspect-video">
                                         <Image
-                                            src={project.image || "/placeholder.svg"}
+                                            src={project.image || "/images/fallback.png"} // Fallback image
                                             alt={project.title}
                                             width={800}
                                             height={600}
@@ -206,7 +206,12 @@ export default function Projects() {
                                                 </span>
                                             ))}
                                         </div>
-                                        <Button variant="outline" size="sm" className="w-full mt-auto" onClick={() => setSelectedProject(project)}>
+                                        <Button
+                                            variant="outline"
+                                            size="sm"
+                                            className="w-full mt-auto"
+                                            onClick={() => setSelectedProject(project)}
+                                        >
                                             View Details
                                         </Button>
                                     </div>
@@ -231,7 +236,7 @@ export default function Projects() {
                     <div className="relative aspect-video rounded-lg overflow-hidden mb-6">
                         {selectedProject && (
                             <Image
-                                src={selectedProject.image || "/placeholder.svg"}
+                                src={selectedProject.image || "/images/fallback.png"} // Fallback image
                                 alt={selectedProject.title}
                                 width={800}
                                 height={600}
