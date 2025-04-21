@@ -123,7 +123,7 @@ export default function Projects() {
                         <h2 className="text-3xl md:text-4xl font-bold mb-4">My Projects</h2>
                         <div className="w-20 h-1 bg-primary mx-auto mb-6"></div>
                         <p className="text-foreground/80 max-w-2xl mx-auto">
-                            Here are some of the projects I've worked on. Each project demonstrates different skills and technologies.
+                            Here are some of the projects I&#39;ve worked on. Each project demonstrates different skills and technologies.
                         </p>
                     </motion.div>
 

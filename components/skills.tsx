@@ -90,7 +90,7 @@ export default function Skills() {
                         <h2 className="text-3xl md:text-4xl font-bold mb-4">Skills & Technologies</h2>
                         <div className="w-20 h-1 bg-primary mx-auto mb-6"></div>
                         <p className="text-foreground/80 max-w-2xl mx-auto">
-                            I've worked with a variety of technologies and tools throughout my journey. Here's an overview of my
+                            I&#39;ve worked with a variety of technologies and tools throughout my journey. Here&#39;s an overview of my
                             technical and soft skills:
                         </p>
                     </motion.div>
