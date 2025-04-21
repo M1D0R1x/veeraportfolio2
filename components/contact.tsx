@@ -61,6 +61,7 @@ export default function Contact() {
             } else {
                 throw new Error("Failed to send message")
             }
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
         } catch (error) {
             setFormStatus({
                 type: "error",
