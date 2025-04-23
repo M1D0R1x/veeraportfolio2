@@ -97,6 +97,24 @@ export default function Projects() {
                 "Integrated JavaScript for front-end animation rendering",
             ],
         },
+        {
+            id: 4,
+            title: "FitFork",
+            description: "A React-based web application for AI-driven personalized nutrition planning",
+            image: "/images/fitfork.png",
+            tags: ["React", "JavaScript", "Node.js", "Git"],
+            category: ["web", "react"],
+            demoUrl: "https://fitfork.vercel.app",
+            codeUrl: "https://github.com/M1D0R1x/fitfork",
+            details:
+                "FitFork is a React-based web application under development, designed to integrate AI for generating personalized nutrition plans based on user health and preferences.",
+            features: [
+                "Built with React for a responsive and interactive user interface",
+                "Implemented forms for collecting user health and dietary preferences",
+                "Structured for future AI model integration to deliver tailored nutrition recommendations",
+            ],
+        },
+
     ]
 
     const filters = [
@@ -233,14 +251,14 @@ export default function Projects() {
                         <span className="sr-only">Close</span>
                     </DialogClose>
 
-                    <div className="relative aspect-video rounded-lg overflow-hidden mb-6">
+                    <div className="relative w-full max-h-[40vh] rounded-lg overflow-hidden mb-6">
                         {selectedProject && (
                             <Image
                                 src={selectedProject.image || "/images/fallback.png"} // Fallback image
                                 alt={selectedProject.title}
                                 width={800}
                                 height={600}
-                                className="object-cover"
+                                className="w-full h-auto object-contain rounded-lg"
                             />
                         )}
                     </div>
@@ -264,8 +282,8 @@ export default function Projects() {
                                 <div className="flex flex-wrap gap-2">
                                     {selectedProject?.tags.map((tag, index) => (
                                         <span key={index} className="px-3 py-1 bg-secondary text-secondary-foreground rounded-full text-sm">
-                                            {tag}
-                                        </span>
+                                {tag}
+                            </span>
                                     ))}
                                 </div>
                             </div>
