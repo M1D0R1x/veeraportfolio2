@@ -11,6 +11,7 @@ import { Alert, AlertDescription } from "@/components/ui/alert"
 
 export default function Contact() {
     const ref = useRef<HTMLDivElement>(null)
+    const formRef = useRef<HTMLFormElement>(null) // Add a ref for the form
     const isInView = useInView(ref, { once: true, margin: "-100px 0px" })
     const [isSubmitting, setIsSubmitting] = useState(false)
     const [formStatus, setFormStatus] = useState<{
@@ -36,36 +37,54 @@ export default function Contact() {
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         setIsSubmitting(true)
+        setFormStatus({ type: null, message: "" }) // Reset form status
 
         try {
             const formData = new FormData(e.currentTarget)
+            const body = JSON.stringify({
+                name: formData.get("name"),
+                email: formData.get("email"),
+                subject: formData.get("subject"),
+                message: formData.get("message"),
+            })
+
             const response = await fetch("/api/contact", {
                 method: "POST",
-                body: JSON.stringify({
-                    name: formData.get("name"),
-                    email: formData.get("email"),
-                    subject: formData.get("subject"),
-                    message: formData.get("message"),
-                }),
+                body,
                 headers: {
                     "Content-Type": "application/json",
                 },
             })
 
-            if (response.ok) {
+            // Log response for debugging
+            console.log("API Response:", {
+                status: response.status,
+                ok: response.ok,
+                statusText: response.statusText,
+            })
+
+            const responseData = await response.json()
+            console.log("Response Data:", responseData)
+
+            // Handle success (status codes 200 or 201)
+            if (response.status === 200 || response.status === 201) {
                 setFormStatus({
                     type: "success",
                     message: "Your message has been sent successfully! I'll get back to you soon.",
                 })
-                e.currentTarget.reset()
+                // Use formRef to reset the form
+                if (formRef.current) {
+                    formRef.current.reset()
+                }
             } else {
-                throw new Error("Failed to send message")
+                throw new Error(responseData.message || `API error: ${response.statusText}`)
             }
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        } catch (error) {
+        } catch (error: unknown) {
+            console.error("Form Submission Error:", error)
+            const errorMessage = error instanceof Error ? error.message : "An unexpected error occurred"
             setFormStatus({
                 type: "error",
-                message: "Failed to send message. Please try again or contact me directly.",
+                message: `Failed to send message: ${errorMessage}. Please try again or contact me directly.`,
             })
         } finally {
             setIsSubmitting(false)
@@ -188,7 +207,7 @@ export default function Contact() {
                                     </Alert>
                                 )}
 
-                                <form onSubmit={handleSubmit} className="space-y-6">
+                                <form ref={formRef} onSubmit={handleSubmit} className="space-y-6">
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                         <div className="space-y-2">
                                             <label htmlFor="name" className="text-sm font-medium">
