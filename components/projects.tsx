@@ -18,7 +18,7 @@ type Project = {
     id: number
     title: string
     description: string
-    images: string[] // Changed from single image to array of images
+    images: string[]
     tags: string[]
     category: string[]
     demoUrl?: string
@@ -30,6 +30,7 @@ type Project = {
 export default function Projects() {
     const [activeFilter, setActiveFilter] = useState("all")
     const [selectedProject, setSelectedProject] = useState<Project | null>(null)
+    const [currentImageIndex, setCurrentImageIndex] = useState(0) // State to track current image
     const ref = useRef<HTMLDivElement>(null)
     const isInView = useInView(ref, { once: true, margin: "-100px 0px" })
 
@@ -80,7 +81,6 @@ export default function Projects() {
                 "/images/portifolio/c2.png",
                 "/images/portifolio/c3.png",
                 "/images/portifolio/c4.png",
-
             ],
             tags: ["Java", "Java Swing", "Socket Programming", "SQLite", "Maven", "Git"],
             category: ["java"],
@@ -101,7 +101,8 @@ export default function Projects() {
                 "/images/portifolio/animated.png",
                 "/images/portifolio/a2.png",
                 "/images/portifolio/a3.png",
-                "/images/portifolio/a4.png",],
+                "/images/portifolio/a4.png",
+            ],
             tags: ["Python", "Django", "PostgreSQL", "JavaScript"],
             category: ["web", "django"],
             demoUrl: "https://animatedsign-coral.vercel.app",
@@ -122,7 +123,6 @@ export default function Projects() {
                 "/images/portifolio/f2.png",
                 "/images/portifolio/f3.png",
                 "/images/portifolio/f4.png",
-
             ],
             tags: ["React", "JavaScript", "Node.js", "Git"],
             category: ["web", "react"],
@@ -148,16 +148,22 @@ export default function Projects() {
     const filteredProjects =
         activeFilter === "all" ? projects : projects.filter((project) => project.category.includes(activeFilter))
 
-    // Function to scroll the image container left or right
-    const scrollImages = (direction: "left" | "right") => {
-        const container = document.getElementById(`image-container-${selectedProject?.id}`)
-        if (container) {
-            const scrollAmount = container.clientWidth * 0.8 // Scroll by 80% of container width
-            container.scrollBy({
-                left: direction === "left" ? -scrollAmount : scrollAmount,
-                behavior: "smooth",
-            })
+    // Function to navigate images
+    const navigateImages = (direction: "left" | "right") => {
+        if (selectedProject) {
+            const totalImages = selectedProject.images.length
+            if (direction === "left") {
+                setCurrentImageIndex((prev) => (prev === 0 ? totalImages - 1 : prev - 1))
+            } else {
+                setCurrentImageIndex((prev) => (prev === totalImages - 1 ? 0 : prev + 1))
+            }
         }
+    }
+
+    // Reset image index when a new project is selected
+    const handleProjectSelect = (project: Project | null) => {
+        setSelectedProject(project)
+        setCurrentImageIndex(0) // Reset to first image
     }
 
     return (
@@ -217,7 +223,7 @@ export default function Projects() {
                                                 variant="outline"
                                                 size="icon"
                                                 className="bg-white/20 backdrop-blur-sm border-white/50 text-white hover:bg-white/30"
-                                                onClick={() => setSelectedProject(project)}
+                                                onClick={() => handleProjectSelect(project)}
                                             >
                                                 <Maximize2 className="h-5 w-5" />
                                             </Button>
@@ -261,7 +267,7 @@ export default function Projects() {
                                             variant="outline"
                                             size="sm"
                                             className="w-full mt-auto"
-                                            onClick={() => setSelectedProject(project)}
+                                            onClick={() => handleProjectSelect(project)}
                                         >
                                             View Details
                                         </Button>
@@ -273,7 +279,7 @@ export default function Projects() {
                 </motion.div>
             </div>
 
-            <Dialog open={!!selectedProject} onOpenChange={(open) => !open && setSelectedProject(null)}>
+            <Dialog open={!!selectedProject} onOpenChange={(open) => !open && handleProjectSelect(null)}>
                 <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
                     <DialogHeader>
                         <DialogTitle className="text-2xl">{selectedProject?.title}</DialogTitle>
@@ -286,35 +292,15 @@ export default function Projects() {
 
                     <div className="relative w-full mb-6">
                         {selectedProject && (
-                            <div className="relative">
-                                {/* Scrollable image container */}
-                                <div
-                                    id={`image-container-${selectedProject.id}`}
-                                    className="flex overflow-x-auto snap-x snap-mandatory scroll-smooth scrollbar-thin scrollbar-thumb-primary/50 scrollbar-track-secondary/20"
-                                    style={{ maxHeight: "40vh" }}
-                                >
-                                    {selectedProject.images.length > 0 ? (
-                                        selectedProject.images.map((image, index) => (
-                                            <div key={index} className="flex-shrink-0 snap-center w-full">
-                                                <Image
-                                                    src={image || "/images/fallback.png"}
-                                                    alt={`${selectedProject.title} screenshot ${index + 1}`}
-                                                    width={800}
-                                                    height={600}
-                                                    className="w-full h-auto object-contain rounded-lg"
-                                                />
-                                            </div>
-                                        ))
-                                    ) : (
-                                        <Image
-                                            src="/images/fallback.png"
-                                            alt="Fallback image"
-                                            width={800}
-                                            height={600}
-                                            className="w-full h-auto object-contain rounded-lg"
-                                        />
-                                    )}
-                                </div>
+                            <div className="relative flex items-center justify-center" style={{ maxHeight: "40vh" }}>
+                                {/* Single image display */}
+                                <Image
+                                    src={selectedProject.images[currentImageIndex] || "/images/fallback.png"}
+                                    alt={`${selectedProject.title} screenshot ${currentImageIndex + 1}`}
+                                    width={800}
+                                    height={600}
+                                    className="w-full h-auto object-contain rounded-lg max-h-[40vh]"
+                                />
                                 {/* Navigation buttons */}
                                 {selectedProject.images.length > 1 && (
                                     <>
@@ -322,7 +308,7 @@ export default function Projects() {
                                             variant="outline"
                                             size="icon"
                                             className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-white/80 hover:bg-white"
-                                            onClick={() => scrollImages("left")}
+                                            onClick={() => navigateImages("left")}
                                         >
                                             <ChevronLeft className="h-5 w-5" />
                                         </Button>
@@ -330,7 +316,7 @@ export default function Projects() {
                                             variant="outline"
                                             size="icon"
                                             className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-white/80 hover:bg-white"
-                                            onClick={() => scrollImages("right")}
+                                            onClick={() => navigateImages("right")}
                                         >
                                             <ChevronRight className="h-5 w-5" />
                                         </Button>
