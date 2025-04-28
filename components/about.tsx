@@ -44,7 +44,7 @@ export default function About() {
                         <motion.div variants={itemVariants} className="relative">
                             <div className="relative w-full aspect-square max-w-md mx-auto overflow-hidden rounded-lg shadow-xl">
                                 <Image
-                                    src="/developer-portrait.jpg"
+                                    src="/images/photo.jpg"
                                     alt="Developer Portrait"
                                     width={500}
                                     height={500}

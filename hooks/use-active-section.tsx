@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 
-export type SectionName = "home" | "about" | "skills" | "projects" | "contact"
+export type SectionName = "home" | "about" | "skills" | "projects" | "certifications" | "achievements" | "contact"
 
 export function useActiveSection() {
     const [activeSection, setActiveSection] = useState<SectionName>("home")
@@ -15,7 +15,7 @@ export function useActiveSection() {
             const sections = document.querySelectorAll("section[id]")
             const scrollPosition = window.scrollY + 100 // offset for header
 
-            let current = "home"
+            let current: SectionName = "home"
             sections.forEach((section) => {
                 const sectionTop = (section as HTMLElement).offsetTop
                 const sectionHeight = section.clientHeight
@@ -24,7 +24,6 @@ export function useActiveSection() {
                 }
             })
 
-            // @ts-ignore
             setActiveSection(current)
         }
 
@@ -56,4 +55,3 @@ export function useActiveSection() {
 
     return { activeSection, scrollToSection }
 }
-
