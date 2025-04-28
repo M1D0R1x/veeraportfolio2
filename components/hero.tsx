@@ -62,7 +62,7 @@ export default function Hero() {
                     <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
                         <h1 className="text-4xl md:text-6xl font-bold mb-6">
               <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary to-blue-600">
-                Full-Stack Developer
+                Software Developer
               </span>
                         </h1>
                     </motion.div>

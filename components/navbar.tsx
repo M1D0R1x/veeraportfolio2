@@ -24,7 +24,7 @@ export default function Navbar() {
             <div className="container mx-auto px-4 py-4 flex items-center justify-between">
                 <div className="text-xl font-bold text-primary">
                     <a onClick={() => scrollToSection("home")} className="cursor-pointer">
-                        Portfolio
+                        Saviti Veerababu
                     </a>
                 </div>
                 <div className="flex items-center gap-4">
