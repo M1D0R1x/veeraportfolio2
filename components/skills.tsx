@@ -53,7 +53,7 @@ export default function Skills() {
             items: [
                 { name: "Java", image: "/images/java.jpg" },
                 { name: "Python", image: "/images/python.jpg" },
-                { name: "C/C++", image: "/images/c++.jpg" },
+                { name: "C/C++", image: "/images/c++.svg" },
                 { name: "JavaScript", image: "/images/javascript.jpeg" },
                 { name: "R", image: "/images/r.jpeg" },
             ],
@@ -75,8 +75,8 @@ export default function Skills() {
             category: "Build Tools",
             icon: <Layers className="h-6 w-6" />,
             items: [
-                { name: "Maven", image: "/images/maven.png" },
-                { name: "Gradle", image: "/images/gradle.png" },
+                { name: "Maven", image: "/images/maven.jpeg" },
+                { name: "Gradle", image: "/images/gradle.webp" },
             ],
         },
         {
@@ -84,7 +84,7 @@ export default function Skills() {
             icon: <Database className="h-6 w-6" />,
             items: [
                 { name: "PostgreSQL", image: "/images/postgresql.png" },
-                { name: "SQLite", image: "/images/sqlite.jpeg" },
+                { name: "SQLite", image: "/images/sqlite.jpg" },
                 { name: "MySQL", image: "/images/sql.png" },
             ],
         },
@@ -101,7 +101,7 @@ export default function Skills() {
             icon: <GitBranch className="h erroneous code here-6 w-6" />,
             items: [
                 { name: "Git", image: "/images/git.png" },
-                { name: "GitHub", image: "/images/github.png" },
+                { name: "GitHub", image: "/images/github.jpg" },
             ],
         },
         {

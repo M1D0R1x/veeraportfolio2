@@ -4,7 +4,7 @@ import { useState, useRef } from "react"
 import { motion, useInView, AnimatePresence } from "framer-motion"
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
-import { ExternalLink, Github, X, Maximize2, Code, Globe } from "lucide-react"
+import { ExternalLink, Github, X, Maximize2, Code, Globe, ChevronLeft, ChevronRight } from "lucide-react"
 import {
     Dialog,
     DialogContent,
@@ -18,7 +18,7 @@ type Project = {
     id: number
     title: string
     description: string
-    image: string
+    images: string[] // Changed from single image to array of images
     tags: string[]
     category: string[]
     demoUrl?: string
@@ -53,7 +53,13 @@ export default function Projects() {
             id: 1,
             title: "Nihonow",
             description: "A full-stack web application for Japanese language learning, deployed on Vercel",
-            image: "/images/nihonow.png", // Replace with your screenshot
+            images: [
+                "/images/portifolio/nihonow.png",
+                "/images/portifolio/n2.png",
+                "/images/portifolio/n3.png",
+                "/images/portifolio/n4.png",
+                "/images/portifolio/n5.png",
+            ],
             tags: ["Python", "Django", "HTML", "CSS", "JavaScript", "PostgreSQL", "Git"],
             category: ["web", "django"],
             demoUrl: "https://nihonow.vercel.app",
@@ -69,7 +75,13 @@ export default function Projects() {
             id: 2,
             title: "Chat Application",
             description: "A peer-to-peer chat application with real-time messaging, file transfers, and a Java Swing interface",
-            image: "/images/chatapp.png", // Replace with your screenshot
+            images: [
+                "/images/portifolio/chatapp.png",
+                "/images/portifolio/c2.png",
+                "/images/portifolio/c3.png",
+                "/images/portifolio/c4.png",
+
+            ],
             tags: ["Java", "Java Swing", "Socket Programming", "SQLite", "Maven", "Git"],
             category: ["java"],
             codeUrl: "https://github.com/M1D0R1x/Java_Chat_Application",
@@ -85,7 +97,11 @@ export default function Projects() {
             id: 3,
             title: "Text and Speech to Indian Sign Language",
             description: "A web application converting text and speech into animated Indian Sign Language gestures, deployed on Vercel",
-            image: "/images/animated.png", // Replace with your screenshot
+            images: [
+                "/images/portifolio/animated.png",
+                "/images/portifolio/a2.png",
+                "/images/portifolio/a3.png",
+                "/images/portifolio/a4.png",],
             tags: ["Python", "Django", "PostgreSQL", "JavaScript"],
             category: ["web", "django"],
             demoUrl: "https://animatedsign-coral.vercel.app",
@@ -101,7 +117,13 @@ export default function Projects() {
             id: 4,
             title: "FitFork",
             description: "A React-based web application for AI-driven personalized nutrition planning",
-            image: "/images/fitfork.png",
+            images: [
+                "/images/portifolio/fitfork.png",
+                "/images/portifolio/f2.png",
+                "/images/portifolio/f3.png",
+                "/images/portifolio/f4.png",
+
+            ],
             tags: ["React", "JavaScript", "Node.js", "Git"],
             category: ["web", "react"],
             demoUrl: "https://fitfork.vercel.app",
@@ -114,7 +136,6 @@ export default function Projects() {
                 "Structured for future AI model integration to deliver tailored nutrition recommendations",
             ],
         },
-
     ]
 
     const filters = [
@@ -126,6 +147,18 @@ export default function Projects() {
 
     const filteredProjects =
         activeFilter === "all" ? projects : projects.filter((project) => project.category.includes(activeFilter))
+
+    // Function to scroll the image container left or right
+    const scrollImages = (direction: "left" | "right") => {
+        const container = document.getElementById(`image-container-${selectedProject?.id}`)
+        if (container) {
+            const scrollAmount = container.clientWidth * 0.8 // Scroll by 80% of container width
+            container.scrollBy({
+                left: direction === "left" ? -scrollAmount : scrollAmount,
+                behavior: "smooth",
+            })
+        }
+    }
 
     return (
         <section id="projects" className="py-20 bg-secondary/30">
@@ -173,7 +206,7 @@ export default function Projects() {
                                 >
                                     <div className="relative overflow-hidden aspect-video">
                                         <Image
-                                            src={project.image || "/images/fallback.png"} // Fallback image
+                                            src={project.images[0] || "/images/fallback.png"} // Use first image for preview
                                             alt={project.title}
                                             width={800}
                                             height={600}
@@ -251,15 +284,59 @@ export default function Projects() {
                         <span className="sr-only">Close</span>
                     </DialogClose>
 
-                    <div className="relative w-full max-h-[40vh] rounded-lg overflow-hidden mb-6">
+                    <div className="relative w-full mb-6">
                         {selectedProject && (
-                            <Image
-                                src={selectedProject.image || "/images/fallback.png"} // Fallback image
-                                alt={selectedProject.title}
-                                width={800}
-                                height={600}
-                                className="w-full h-auto object-contain rounded-lg"
-                            />
+                            <div className="relative">
+                                {/* Scrollable image container */}
+                                <div
+                                    id={`image-container-${selectedProject.id}`}
+                                    className="flex overflow-x-auto snap-x snap-mandatory scroll-smooth scrollbar-thin scrollbar-thumb-primary/50 scrollbar-track-secondary/20"
+                                    style={{ maxHeight: "40vh" }}
+                                >
+                                    {selectedProject.images.length > 0 ? (
+                                        selectedProject.images.map((image, index) => (
+                                            <div key={index} className="flex-shrink-0 snap-center w-full">
+                                                <Image
+                                                    src={image || "/images/fallback.png"}
+                                                    alt={`${selectedProject.title} screenshot ${index + 1}`}
+                                                    width={800}
+                                                    height={600}
+                                                    className="w-full h-auto object-contain rounded-lg"
+                                                />
+                                            </div>
+                                        ))
+                                    ) : (
+                                        <Image
+                                            src="/images/fallback.png"
+                                            alt="Fallback image"
+                                            width={800}
+                                            height={600}
+                                            className="w-full h-auto object-contain rounded-lg"
+                                        />
+                                    )}
+                                </div>
+                                {/* Navigation buttons */}
+                                {selectedProject.images.length > 1 && (
+                                    <>
+                                        <Button
+                                            variant="outline"
+                                            size="icon"
+                                            className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-white/80 hover:bg-white"
+                                            onClick={() => scrollImages("left")}
+                                        >
+                                            <ChevronLeft className="h-5 w-5" />
+                                        </Button>
+                                        <Button
+                                            variant="outline"
+                                            size="icon"
+                                            className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-white/80 hover:bg-white"
+                                            onClick={() => scrollImages("right")}
+                                        >
+                                            <ChevronRight className="h-5 w-5" />
+                                        </Button>
+                                    </>
+                                )}
+                            </div>
                         )}
                     </div>
 
@@ -282,8 +359,8 @@ export default function Projects() {
                                 <div className="flex flex-wrap gap-2">
                                     {selectedProject?.tags.map((tag, index) => (
                                         <span key={index} className="px-3 py-1 bg-secondary text-secondary-foreground rounded-full text-sm">
-                                {tag}
-                            </span>
+                                            {tag}
+                                        </span>
                                     ))}
                                 </div>
                             </div>
