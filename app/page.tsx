@@ -15,10 +15,10 @@ export default function Home() {
             <Navbar />
             <Hero />
             <About />
-            <Certifications />
-            <Achievements />
             <Skills />
             <Projects />
+            <Certifications />
+            <Achievements />
             <Contact />
             <ScrollToTop />
             <ScrollIndicator />
