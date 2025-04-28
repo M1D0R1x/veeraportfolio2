@@ -1,12 +1,47 @@
 "use client"
 
-import { useRef } from "react"
+import { useRef, useState, useEffect } from "react"
 import { motion, useInView } from "framer-motion"
 import { Award } from "lucide-react"
+import dynamic from "next/dynamic"
+import Image from "next/image"
+
+// Dynamically import Modal to disable SSR
+const Modal = dynamic(() => import("react-modal"), { ssr: false })
+
+// Import react-modal
+import ReactModal from "react-modal"
 
 export default function Certifications() {
     const ref = useRef<HTMLDivElement>(null)
     const isInView = useInView(ref, { once: true, margin: "-100px 0px" })
+
+    // State for modal
+    const [modalIsOpen, setModalIsOpen] = useState(false)
+    const [selectedImage, setSelectedImage] = useState<string | null>(null)
+
+    // Set Modal app element when #__next is available
+    useEffect(() => {
+        const setAppElement = () => {
+            const element = document.querySelector("#__next")
+            if (element) {
+                ReactModal.setAppElement("#__next")
+            } else {
+                setTimeout(setAppElement, 100)
+            }
+        }
+        setAppElement()
+    }, [])
+
+    const openModal = (image: string) => {
+        setSelectedImage(image)
+        setModalIsOpen(true)
+    }
+
+    const closeModal = () => {
+        setModalIsOpen(false)
+        setSelectedImage(null)
+    }
 
     const containerVariants = {
         hidden: { opacity: 0 },
@@ -23,11 +58,61 @@ export default function Certifications() {
         visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
     }
 
+    // Define certifications with month and year
     const certifications = [
-        { title: "AWS Certified Solutions Architect", issuer: "Amazon", year: "2023" },
-        { title: "Google Data Analytics Professional Certificate", issuer: "Coursera", year: "2022" },
-        { title: "Full-Stack Web Development", issuer: "freeCodeCamp", year: "2023" },
+        {
+            title: "Supervised Machine Learning: Regression and Classification",
+            issuer: "Coursera",
+            year: 2024,
+            month: 11,
+            certificateImage: "/images/certificates/sml.jpg",
+        },
+        {
+            title: "Introduction to Internet of Things",
+            issuer: "NPTEL",
+            year: 2024,
+            month: 10,
+            certificateImage: "/images/certificates/iot.jpg",
+        },
+        {
+            title: "Excel Skills for Business",
+            issuer: "Coursera",
+            year: 2024,
+            month: 5,
+            certificateImage: "/images/certificates/excel.jpg",
+        },
+        {
+            title: "Dynamic Programming, Greedy Algorithms",
+            issuer: "Coursera",
+            year: 2024,
+            month: 4,
+            certificateImage: "/images/certificates/dp.jpg",
+        },
+        {
+            title: "Software Development Processes and Methodologies",
+            issuer: "Coursera",
+            year: 2024,
+            month: 4,
+            certificateImage: "/images/certificates/software.jpg",
+        },
     ]
+
+    // Sort certifications by year and month (descending order)
+    certifications.sort((a, b) => {
+        if (a.year !== b.year) {
+            return b.year - a.year
+        }
+        return b.month - a.month
+    })
+
+    // Function to convert month number to short month name
+    const getMonthName = (month: number) => {
+        const months = [
+            "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+            "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+        ]
+        return months[month - 1]
+    }
 
     return (
         <section id="certifications" className="py-20 bg-secondary/20">
@@ -49,19 +134,71 @@ export default function Certifications() {
                             {certifications.map((cert, index) => (
                                 <li
                                     key={index}
-                                    className="flex items-start gap-4 p-4 bg-card rounded-lg shadow-sm hover:shadow-md transition-shadow border"
+                                    className="flex items-center gap-4 p-4 bg-card rounded-lg shadow-sm hover:shadow-md transition-shadow border"
                                 >
-                                    <Award className="h-6 w-6 text-primary mt-1" />
-                                    <div>
+                                    <Award className="h-6 w-6 text-primary" />
+                                    <div className="flex-1">
                                         <h3 className="text-lg font-semibold">{cert.title}</h3>
-                                        <p className="text-foreground/80">{cert.issuer} • {cert.year}</p>
+                                        <p className="text-foreground/80">
+                                            {cert.issuer} • {getMonthName(cert.month)} {cert.year}
+                                        </p>
                                     </div>
+                                    <button
+                                        onClick={() => openModal(cert.certificateImage)}
+                                        className="px-3 py-1 bg-primary text-white text-sm font-medium rounded-md hover:bg-primary/90 transition-colors"
+                                    >
+                                        View Certificate
+                                    </button>
                                 </li>
                             ))}
                         </ul>
                     </motion.div>
                 </motion.div>
             </div>
+
+            <Modal
+                isOpen={modalIsOpen}
+                onRequestClose={closeModal}
+                style={{
+                    content: {
+                        top: "50%",
+                        left: "50%",
+                        right: "auto",
+                        bottom: "auto",
+                        marginRight: "-50%",
+                        transform: "translate(-50%, -50%)",
+                        maxWidth: "90%",
+                        maxHeight: "90vh",
+                        padding: "20px",
+                        borderRadius: "8px",
+                        background: "#fff",
+                        overflow: "auto",
+                    },
+                    overlay: {
+                        backgroundColor: "rgba(0, 0, 0, 0.75)",
+                        zIndex: 1000,
+                    },
+                }}
+                contentLabel="Certificate Image"
+            >
+                {selectedImage && (
+                    <div className="relative">
+                        <button
+                            onClick={closeModal}
+                            className="absolute top-2 right-2 text-white bg-black/50 rounded-full p-2 hover:bg-black/70"
+                        >
+                            ✕
+                        </button>
+                        <Image
+                            src={selectedImage}
+                            alt="Certificate"
+                            width={800}
+                            height={600}
+                            className="object-contain max-h-[80vh] w-auto"
+                        />
+                    </div>
+                )}
+            </Modal>
         </section>
     )
 }
