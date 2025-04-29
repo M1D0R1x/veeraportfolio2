@@ -1,6 +1,6 @@
 "use client"
 
-import { useRef, useState } from "react"
+import { useRef, useState, useEffect } from "react"
 import { motion, useInView } from "framer-motion"
 import { Trophy, X, ChevronLeft, ChevronRight } from "lucide-react"
 import Image from "next/image"
@@ -16,6 +16,19 @@ export default function Achievements() {
     const [selectedAchievement, setSelectedAchievement] = useState<number | null>(null)
     const [isImageLoading, setIsImageLoading] = useState(true)
     const [imageDimensions, setImageDimensions] = useState({ width: 800, height: 600 })
+    const [windowSize, setWindowSize] = useState({ width: 800, height: 600 }) // Default values
+
+    // Update window size only on client-side
+    useEffect(() => {
+        if (typeof window !== "undefined") {
+            setWindowSize({ width: window.innerWidth, height: window.innerHeight })
+            const handleResize = () => {
+                setWindowSize({ width: window.innerWidth, height: window.innerHeight })
+            }
+            window.addEventListener("resize", handleResize)
+            return () => window.removeEventListener("resize", handleResize)
+        }
+    }, [])
 
     const containerVariants = {
         hidden: { opacity: 0 },
@@ -47,6 +60,20 @@ export default function Achievements() {
         },
     ]
 
+    const preloadImage = (src: string, callback: (dimensions: { width: number; height: number }) => void) => {
+        if (typeof window !== "undefined") {
+            const img = new window.Image() as HTMLImageElement
+            img.onload = () => {
+                callback({ width: img.width, height: img.height })
+                setIsImageLoading(false)
+            }
+            img.onerror = () => {
+                setIsImageLoading(false)
+            }
+            img.src = src
+        }
+    }
+
     const openDialog = (index: number) => {
         setSelectedAchievement(index)
         setIsImageLoading(true)
@@ -55,17 +82,11 @@ export default function Achievements() {
         // Use default dimensions initially
         setImageDimensions({ width: 800, height: 600 })
 
-        // Preload the image to get dimensions
+        // Preload image only on client-side
         if (index >= 0 && index < achievements.length) {
-            const img = new window.Image() as HTMLImageElement
-            img.onload = () => {
-                setImageDimensions({ width: img.width, height: img.height })
-                setIsImageLoading(false)
-            }
-            img.onerror = () => {
-                setIsImageLoading(false)
-            }
-            img.src = achievements[index].certificate
+            preloadImage(achievements[index].certificate, (dimensions) => {
+                setImageDimensions(dimensions)
+            })
         }
     }
 
@@ -92,15 +113,10 @@ export default function Achievements() {
         setSelectedAchievement(newIndex)
         setIsImageLoading(true)
 
-        const img = new window.Image() as HTMLImageElement
-        img.onload = () => {
-            setImageDimensions({ width: img.width, height: img.height })
-            setIsImageLoading(false)
-        }
-        img.onerror = () => {
-            setIsImageLoading(false)
-        }
-        img.src = achievements[newIndex].certificate
+        // Preload image only on client-side
+        preloadImage(achievements[newIndex].certificate, (dimensions) => {
+            setImageDimensions(dimensions)
+        })
     }
 
     return (
@@ -156,8 +172,8 @@ export default function Achievements() {
                 <DialogContent
                     className="p-0 overflow-hidden bg-background border-none"
                     style={{
-                        maxWidth: `${Math.min(imageDimensions.width + 40, window.innerWidth - 40)}px`,
-                        maxHeight: `${Math.min(imageDimensions.height + 120, window.innerHeight - 80)}px`,
+                        maxWidth: `${Math.min(imageDimensions.width + 40, windowSize.width - 40)}px`,
+                        maxHeight: `${Math.min(imageDimensions.height + 120, windowSize.height - 80)}px`,
                         width: "auto",
                         height: "auto",
                     }}
