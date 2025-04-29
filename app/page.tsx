@@ -1,7 +1,7 @@
 import Hero from "@/components/hero"
 import About from "@/components/about"
 import Certifications from "@/components/certifications"
-import Achievements from "@/components/achievements"
+import ClientAchievements from "@/components/ClientAchievements"
 import Skills from "@/components/skills"
 import Projects from "@/components/projects"
 import Contact from "@/components/contact"
@@ -18,7 +18,7 @@ export default function Home() {
             <Skills />
             <Projects />
             <Certifications />
-            <Achievements />
+            <ClientAchievements />
             <Contact />
             <ScrollToTop />
             <ScrollIndicator />
