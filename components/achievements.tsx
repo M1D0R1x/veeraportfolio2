@@ -1,47 +1,21 @@
 "use client"
 
-import { useRef, useState, useEffect } from "react"
+import { useRef, useState } from "react"
 import { motion, useInView } from "framer-motion"
-import { Trophy } from "lucide-react"
-import dynamic from "next/dynamic"
+import { Trophy, X, ChevronLeft, ChevronRight } from "lucide-react"
 import Image from "next/image"
-
-// Dynamically import Modal to disable SSR
-const Modal = dynamic(() => import("react-modal"), { ssr: false })
-
-// Import react-modal
-import ReactModal from "react-modal"
+import { Dialog, DialogContent, DialogClose } from "@/components/ui/dialog"
+import { Button } from "@/components/ui/button"
 
 export default function Achievements() {
     const ref = useRef<HTMLDivElement>(null)
     const isInView = useInView(ref, { once: true, margin: "-100px 0px" })
 
-    // State for modal
-    const [modalIsOpen, setModalIsOpen] = useState(false)
-    const [selectedImage, setSelectedImage] = useState<string | null>(null)
-
-    // Set Modal app element when #__next is available
-    useEffect(() => {
-        const setAppElement = () => {
-            const element = document.querySelector("#__next")
-            if (element) {
-                ReactModal.setAppElement("#__next")
-            } else {
-                setTimeout(setAppElement, 100)
-            }
-        }
-        setAppElement()
-    }, [])
-
-    const openModal = (image: string) => {
-        setSelectedImage(image)
-        setModalIsOpen(true)
-    }
-
-    const closeModal = () => {
-        setModalIsOpen(false)
-        setSelectedImage(null)
-    }
+    // State for dialog and image
+    const [dialogOpen, setDialogOpen] = useState(false)
+    const [selectedAchievement, setSelectedAchievement] = useState<number | null>(null)
+    const [isImageLoading, setIsImageLoading] = useState(true)
+    const [imageDimensions, setImageDimensions] = useState({ width: 800, height: 600 })
 
     const containerVariants = {
         hidden: { opacity: 0 },
@@ -73,6 +47,62 @@ export default function Achievements() {
         },
     ]
 
+    const openDialog = (index: number) => {
+        setSelectedAchievement(index)
+        setIsImageLoading(true)
+        setDialogOpen(true)
+
+        // Use default dimensions initially
+        setImageDimensions({ width: 800, height: 600 })
+
+        // Preload the image to get dimensions
+        if (index >= 0 && index < achievements.length) {
+            const img = new window.Image() as HTMLImageElement
+            img.onload = () => {
+                setImageDimensions({ width: img.width, height: img.height })
+                setIsImageLoading(false)
+            }
+            img.onerror = () => {
+                setIsImageLoading(false)
+            }
+            img.src = achievements[index].certificate
+        }
+    }
+
+    const closeDialog = () => {
+        setDialogOpen(false)
+        setTimeout(() => {
+            setSelectedAchievement(null)
+        }, 300)
+    }
+
+    // Function to navigate between achievements
+    const navigateAchievements = (direction: "prev" | "next") => {
+        if (selectedAchievement === null) return
+
+        const totalAchievements = achievements.length
+        let newIndex: number
+
+        if (direction === "prev") {
+            newIndex = selectedAchievement === 0 ? totalAchievements - 1 : selectedAchievement - 1
+        } else {
+            newIndex = selectedAchievement === totalAchievements - 1 ? 0 : selectedAchievement + 1
+        }
+
+        setSelectedAchievement(newIndex)
+        setIsImageLoading(true)
+
+        const img = new window.Image() as HTMLImageElement
+        img.onload = () => {
+            setImageDimensions({ width: img.width, height: img.height })
+            setIsImageLoading(false)
+        }
+        img.onerror = () => {
+            setIsImageLoading(false)
+        }
+        img.src = achievements[newIndex].certificate
+    }
+
     return (
         <section id="achievements" className="py-20 bg-secondary/20">
             <div className="container mx-auto px-4">
@@ -93,20 +123,22 @@ export default function Achievements() {
                             {achievements.map((achievement, index) => (
                                 <li
                                     key={index}
-                                    className="flex items-center gap-4 p-4 bg-card rounded-lg shadow-sm hover:shadow-md transition-shadow border"
+                                    className="flex flex-col sm:flex-row sm:items-center gap-4 p-4 bg-card rounded-lg shadow-sm hover:shadow-md transition-shadow border"
                                 >
-                                    <Trophy className="h-6 w-6 text-primary" />
-                                    <div className="flex-1">
-                                        <h3 className="text-lg font-semibold">{achievement.title}</h3>
-                                        <p className="text-foreground/80">{achievement.event}</p>
-                                        <p className="text-foreground/70 text-sm">{achievement.description}</p>
+                                    <div className="flex items-center gap-4 flex-1">
+                                        <Trophy className="h-6 w-6 text-primary flex-shrink-0" />
+                                        <div>
+                                            <h3 className="text-lg font-semibold">{achievement.title}</h3>
+                                            <p className="text-foreground/80">{achievement.event}</p>
+                                            <p className="text-foreground/70 text-sm">{achievement.description}</p>
+                                        </div>
                                     </div>
-                                    <button
-                                        onClick={() => openModal(achievement.certificate)}
-                                        className="px-3 py-1 bg-primary text-white text-sm font-medium rounded-md hover:bg-primary/90 transition-colors"
+                                    <Button
+                                        onClick={() => openDialog(index)}
+                                        className="mt-3 sm:mt-0 px-3 py-1 bg-primary text-white text-sm font-medium rounded-md hover:bg-primary/90 transition-colors"
                                     >
                                         View Certificate
-                                    </button>
+                                    </Button>
                                 </li>
                             ))}
                         </ul>
@@ -114,49 +146,86 @@ export default function Achievements() {
                 </motion.div>
             </div>
 
-            <Modal
-                isOpen={modalIsOpen}
-                onRequestClose={closeModal}
-                style={{
-                    content: {
-                        top: "50%",
-                        left: "50%",
-                        right: "auto",
-                        bottom: "auto",
-                        marginRight: "-50%",
-                        transform: "translate(-50%, -50%)",
-                        maxWidth: "90%",
-                        maxHeight: "90vh",
-                        padding: "20px",
-                        borderRadius: "8px",
-                        background: "#fff",
-                        overflow: "auto",
-                    },
-                    overlay: {
-                        backgroundColor: "rgba(0, 0, 0, 0.75)",
-                        zIndex: 1000,
-                    },
+            {/* Certificate Dialog */}
+            <Dialog
+                open={dialogOpen}
+                onOpenChange={(open) => {
+                    if (!open) closeDialog()
                 }}
-                contentLabel="Certificate Image"
             >
-                {selectedImage && (
-                    <div className="relative">
-                        <button
-                            onClick={closeModal}
-                            className="absolute top-2 right-2 text-white bg-black/50 rounded-full p-2 hover:bg-black/70"
-                        >
-                            ✕
-                        </button>
-                        <Image
-                            src={selectedImage}
-                            alt="Certificate"
-                            width={800}
-                            height={600}
-                            className="object-contain max-h-[80vh] w-auto"
-                        />
-                    </div>
-                )}
-            </Modal>
+                <DialogContent
+                    className="p-0 overflow-hidden bg-background border-none"
+                    style={{
+                        maxWidth: `${Math.min(imageDimensions.width + 40, window.innerWidth - 40)}px`,
+                        maxHeight: `${Math.min(imageDimensions.height + 120, window.innerHeight - 80)}px`,
+                        width: "auto",
+                        height: "auto",
+                    }}
+                >
+                    <DialogClose
+                        className="absolute right-4 top-4 z-10 rounded-full bg-black/50 p-2 text-white hover:bg-black/70 focus:outline-none"
+                        onClick={closeDialog}
+                    >
+                        <X className="h-4 w-4" />
+                        <span className="sr-only">Close</span>
+                    </DialogClose>
+
+                    {selectedAchievement !== null && selectedAchievement >= 0 && selectedAchievement < achievements.length && (
+                        <div className="relative flex flex-col items-center justify-center w-full h-full">
+                            {/* Loading indicator */}
+                            {isImageLoading && (
+                                <div className="absolute inset-0 flex items-center justify-center bg-background/80">
+                                    <div className="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
+                                </div>
+                            )}
+
+                            {/* Certificate image */}
+                            <div className="relative w-full h-full flex items-center justify-center p-4">
+                                <Image
+                                    src={achievements[selectedAchievement].certificate}
+                                    alt={`Certificate for ${achievements[selectedAchievement].title}`}
+                                    width={imageDimensions.width}
+                                    height={imageDimensions.height}
+                                    quality={90}
+                                    priority
+                                    onLoad={() => setIsImageLoading(false)}
+                                    className={`object-contain max-h-full max-w-full transition-opacity duration-300 ${
+                                        isImageLoading ? "opacity-0" : "opacity-100"
+                                    }`}
+                                />
+                            </div>
+
+                            {/* Navigation buttons */}
+                            {achievements.length > 1 && (
+                                <>
+                                    <Button
+                                        variant="outline"
+                                        size="icon"
+                                        className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white border-none"
+                                        onClick={() => navigateAchievements("prev")}
+                                    >
+                                        <ChevronLeft className="h-5 w-5" />
+                                    </Button>
+                                    <Button
+                                        variant="outline"
+                                        size="icon"
+                                        className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white border-none"
+                                        onClick={() => navigateAchievements("next")}
+                                    >
+                                        <ChevronRight className="h-5 w-5" />
+                                    </Button>
+                                </>
+                            )}
+
+                            {/* Achievement title */}
+                            <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4 text-white">
+                                <h3 className="text-lg font-semibold">{achievements[selectedAchievement].title}</h3>
+                                <p className="text-white/80 text-sm">{achievements[selectedAchievement].event}</p>
+                            </div>
+                        </div>
+                    )}
+                </DialogContent>
+            </Dialog>
         </section>
     )
 }
