@@ -16,7 +16,7 @@ export default function Achievements() {
     const [selectedAchievement, setSelectedAchievement] = useState<number | null>(null)
     const [isImageLoading, setIsImageLoading] = useState(true)
     const [imageDimensions, setImageDimensions] = useState({ width: 800, height: 600 })
-    const [windowSize, setWindowSize] = useState({ width: 800, height: 600 }) // Default values
+    const [windowSize, setWindowSize] = useState({ width: 800, height: 600 })
 
     // Update window size only on client-side
     useEffect(() => {
@@ -71,6 +71,9 @@ export default function Achievements() {
                 setIsImageLoading(false)
             }
             img.src = src
+        } else {
+            callback({ width: 800, height: 600 })
+            setIsImageLoading(false)
         }
     }
 
@@ -79,10 +82,8 @@ export default function Achievements() {
         setIsImageLoading(true)
         setDialogOpen(true)
 
-        // Use default dimensions initially
         setImageDimensions({ width: 800, height: 600 })
 
-        // Preload image only on client-side
         if (index >= 0 && index < achievements.length) {
             preloadImage(achievements[index].certificate, (dimensions) => {
                 setImageDimensions(dimensions)
@@ -97,7 +98,6 @@ export default function Achievements() {
         }, 300)
     }
 
-    // Function to navigate between achievements
     const navigateAchievements = (direction: "prev" | "next") => {
         if (selectedAchievement === null) return
 
@@ -113,7 +113,6 @@ export default function Achievements() {
         setSelectedAchievement(newIndex)
         setIsImageLoading(true)
 
-        // Preload image only on client-side
         preloadImage(achievements[newIndex].certificate, (dimensions) => {
             setImageDimensions(dimensions)
         })
@@ -162,7 +161,6 @@ export default function Achievements() {
                 </motion.div>
             </div>
 
-            {/* Certificate Dialog */}
             <Dialog
                 open={dialogOpen}
                 onOpenChange={(open) => {
@@ -188,14 +186,12 @@ export default function Achievements() {
 
                     {selectedAchievement !== null && selectedAchievement >= 0 && selectedAchievement < achievements.length && (
                         <div className="relative flex flex-col items-center justify-center w-full h-full">
-                            {/* Loading indicator */}
                             {isImageLoading && (
                                 <div className="absolute inset-0 flex items-center justify-center bg-background/80">
                                     <div className="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
                                 </div>
                             )}
 
-                            {/* Certificate image */}
                             <div className="relative w-full h-full flex items-center justify-center p-4">
                                 <Image
                                     src={achievements[selectedAchievement].certificate}
@@ -211,7 +207,6 @@ export default function Achievements() {
                                 />
                             </div>
 
-                            {/* Navigation buttons */}
                             {achievements.length > 1 && (
                                 <>
                                     <Button
@@ -233,7 +228,6 @@ export default function Achievements() {
                                 </>
                             )}
 
-                            {/* Achievement title */}
                             <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4 text-white">
                                 <h3 className="text-lg font-semibold">{achievements[selectedAchievement].title}</h3>
                                 <p className="text-white/80 text-sm">{achievements[selectedAchievement].event}</p>
