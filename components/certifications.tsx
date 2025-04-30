@@ -1,6 +1,6 @@
 "use client"
 
-import { useRef, useState } from "react"
+import { useRef, useState, useEffect } from "react"
 import { motion, useInView } from "framer-motion"
 import { Award, X, ChevronLeft, ChevronRight } from "lucide-react"
 import Image from "next/image"
@@ -16,6 +16,19 @@ export default function Certifications() {
     const [selectedCertIndex, setSelectedCertIndex] = useState<number | null>(null)
     const [isImageLoading, setIsImageLoading] = useState(true)
     const [imageDimensions, setImageDimensions] = useState({ width: 800, height: 600 })
+    const [windowSize, setWindowSize] = useState({ width: 800, height: 600 })
+
+    // Update window size only on client-side
+    useEffect(() => {
+        const handleResize = () => {
+            setWindowSize({ width: window.innerWidth, height: window.innerHeight })
+        }
+
+        // Initial size
+        setWindowSize({ width: window.innerWidth, height: window.innerHeight })
+        window.addEventListener("resize", handleResize)
+        return () => window.removeEventListener("resize", handleResize)
+    }, [])
 
     const containerVariants = {
         hidden: { opacity: 0 },
@@ -95,9 +108,11 @@ export default function Certifications() {
 
         // Preload the image to get dimensions
         if (index >= 0 && index < sortedCertifications.length) {
-            const img = new window.Image() as HTMLImageElement
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-expect-error
+            const img = new Image()
             img.onload = () => {
-                setImageDimensions({ width: img.width, height: img.height })
+                setImageDimensions({ width: img.naturalWidth, height: img.naturalHeight })
                 setIsImageLoading(false)
             }
             img.onerror = () => {
@@ -129,10 +144,11 @@ export default function Certifications() {
 
         setSelectedCertIndex(newIndex)
         setIsImageLoading(true)
-
-        const img = new window.Image() as HTMLImageElement
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-expect-error
+        const img = new Image()
         img.onload = () => {
-            setImageDimensions({ width: img.width, height: img.height })
+            setImageDimensions({ width: img.naturalWidth, height: img.naturalHeight })
             setIsImageLoading(false)
         }
         img.onerror = () => {
@@ -195,8 +211,8 @@ export default function Certifications() {
                 <DialogContent
                     className="p-0 overflow-hidden bg-background border-none"
                     style={{
-                        maxWidth: `${Math.min(imageDimensions.width + 40, window.innerWidth - 40)}px`,
-                        maxHeight: `${Math.min(imageDimensions.height + 120, window.innerHeight - 80)}px`,
+                        maxWidth: `${Math.min(imageDimensions.width + 40, windowSize.width - 40)}px`,
+                        maxHeight: `${Math.min(imageDimensions.height + 120, windowSize.height - 80)}px`,
                         width: "auto",
                         height: "auto",
                     }}
@@ -221,7 +237,7 @@ export default function Certifications() {
                             {/* Certificate image */}
                             <div className="relative w-full h-full flex items-center justify-center p-4">
                                 <Image
-                                    src={sortedCertifications[selectedCertIndex].certificateImage}
+                                    src={sortedCertifications[selectedCertIndex].certificateImage || "/placeholder.svg"}
                                     alt={`Certificate for ${sortedCertifications[selectedCertIndex].title}`}
                                     width={imageDimensions.width}
                                     height={imageDimensions.height}

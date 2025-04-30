@@ -16,15 +16,19 @@ export default function Achievements() {
     const [selectedAchievement, setSelectedAchievement] = useState<number | null>(null)
     const [isImageLoading, setIsImageLoading] = useState(true)
     const [imageDimensions, setImageDimensions] = useState({ width: 800, height: 600 })
-    const [windowSize, setWindowSize] = useState({ width: 800, height: 600 })
+    const [, setWindowSize] = useState({ width: 800, height: 600 })
 
     // Update window size only on client-side
     useEffect(() => {
-        if (typeof window !== "undefined") {
-            setWindowSize({ width: window.innerWidth, height: window.innerHeight })
-            const handleResize = () => {
+        const handleResize = () => {
+            if (typeof window !== "undefined") {
                 setWindowSize({ width: window.innerWidth, height: window.innerHeight })
             }
+        }
+
+        // Initial size
+        if (typeof window !== "undefined") {
+            setWindowSize({ width: window.innerWidth, height: window.innerHeight })
             window.addEventListener("resize", handleResize)
             return () => window.removeEventListener("resize", handleResize)
         }
@@ -62,7 +66,10 @@ export default function Achievements() {
 
     const preloadImage = (src: string, callback: (dimensions: { width: number; height: number }) => void) => {
         if (typeof window !== "undefined") {
-            const img = new window.Image() as HTMLImageElement
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-expect-error
+            const img = new Image()
+            img.crossOrigin = "anonymous"
             img.onload = () => {
                 callback({ width: img.width, height: img.height })
                 setIsImageLoading(false)
@@ -72,6 +79,7 @@ export default function Achievements() {
             }
             img.src = src
         } else {
+            // Default dimensions for server-side rendering
             callback({ width: 800, height: 600 })
             setIsImageLoading(false)
         }
@@ -170,8 +178,8 @@ export default function Achievements() {
                 <DialogContent
                     className="p-0 overflow-hidden bg-background border-none"
                     style={{
-                        maxWidth: `${Math.min(imageDimensions.width + 40, windowSize.width - 40)}px`,
-                        maxHeight: `${Math.min(imageDimensions.height + 120, windowSize.height - 80)}px`,
+                        maxWidth: `${Math.min(imageDimensions.width + 40, typeof window !== "undefined" ? window.innerWidth - 40 : 800)}px`,
+                        maxHeight: `${Math.min(imageDimensions.height + 120, typeof window !== "undefined" ? window.innerHeight - 80 : 600)}px`,
                         width: "auto",
                         height: "auto",
                     }}
@@ -194,7 +202,7 @@ export default function Achievements() {
 
                             <div className="relative w-full h-full flex items-center justify-center p-4">
                                 <Image
-                                    src={achievements[selectedAchievement].certificate}
+                                    src={achievements[selectedAchievement].certificate || "/placeholder.svg"}
                                     alt={`Certificate for ${achievements[selectedAchievement].title}`}
                                     width={imageDimensions.width}
                                     height={imageDimensions.height}
