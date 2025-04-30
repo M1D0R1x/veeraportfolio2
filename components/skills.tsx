@@ -52,10 +52,10 @@ export default function Skills() {
             icon: <Code className="h-6 w-6" />,
             items: [
                 { name: "Java", image: "/images/java.jpg" },
-                { name: "Python", image: "/images/python.jpg" },
+                { name: "Python", image: "/images/python.png" },
                 { name: "C/C++", image: "/images/c++.svg" },
-                { name: "JavaScript", image: "/images/javascript.jpeg" },
-                { name: "R", image: "/images/r.jpeg" },
+                { name: "JavaScript", image: "/images/javascript.png" },
+                { name: "R", image: "/images/r.jpg" },
             ],
         },
         {
