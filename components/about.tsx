@@ -73,7 +73,7 @@ export default function About() {
                                 </div>
                                 <div>
                                     <p className="font-medium">Location:</p>
-                                    <p className="text-foreground/80">Jalandhar, Punjab, India</p>
+                                    <p className="text-foreground/80">Phagwara, Punjab, India</p>
                                 </div>
                                 <div>
                                     <p className="font-medium">Availability:</p>
