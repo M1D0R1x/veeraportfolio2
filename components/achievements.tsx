@@ -51,7 +51,7 @@ export default function Achievements() {
 
     const achievements = [
         {
-            title: "Top 5% in Introduction to Internet of Things",
+            title: "Top 5% in Introduction to Internet of Things(NPTEL)",
             event: "October 2024",
             description: "Ranked in the top 5% among 78,608 participants.",
             certificate: "/images/achievements/iot.jpg",
