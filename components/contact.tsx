@@ -121,7 +121,7 @@ export default function Contact() {
                                         </div>
                                         <div>
                                             <h4 className="font-medium">Location</h4>
-                                            <p className="text-foreground/70">Jalandhar, Punjab, India</p>
+                                            <p className="text-foreground/70">Phagwara, Punjab, India</p>
                                         </div>
                                     </div>
 
