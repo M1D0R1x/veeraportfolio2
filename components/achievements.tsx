@@ -51,15 +51,15 @@ export default function Achievements() {
 
     const achievements = [
         {
-            title: "Top 5% in Introduction to Internet of Things(NPTEL)",
-            event: "October 2024",
-            description: "Ranked in the top 5% among 78,608 participants.",
+            title: "Top 5% in Introduction to Internet of Things",
+            event: "NPTEL October 2024",
+            description: "Ranked in the top 5% among 78,608 participants",
             certificate: "/images/achievements/iot.jpg",
         },
         {
             title: "Participant in TVS Credit E.P.I.C 6 Hackathon",
             event: "August 2024",
-            description: "Participated in the TVS Credit E.P.I.C 6 Hackathon.",
+            description: "Participated in the TVS Credit E.P.I.C 6 Hackathon",
             certificate: "/images/achievements/tvscredit.jpg",
         },
     ]
