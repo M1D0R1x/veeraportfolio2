@@ -81,7 +81,7 @@ export default function About() {
                                 </div>
                             </div>
                             <Button className="flex items-center gap-2" asChild>
-                                <a href="resumes/Veera_resume.pdf" download>
+                                <a href="resumes/veera_sde_resume.pdf" download>
                                     <FileText className="h-4 w-4" />
                                     Download Resume
                                 </a>
