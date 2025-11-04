@@ -44,7 +44,7 @@ export default function About() {
                         <motion.div variants={itemVariants} className="relative">
                             <div className="relative w-full aspect-square max-w-md mx-auto overflow-hidden rounded-lg shadow-xl">
                                 <Image
-                                    src="/images/photos.jpg"
+                                    src="/images/foto.png"
                                     alt="Developer Portrait"
                                     width={500}
                                     height={500}
@@ -81,7 +81,7 @@ export default function About() {
                                 </div>
                             </div>
                             <Button className="flex items-center gap-2" asChild>
-                                <a href="resumes/veera_sde_resume.pdf" download>
+                                <a href="resumes/veera_resume.pdf" download>
                                     <FileText className="h-4 w-4" />
                                     Download Resume
                                 </a>
